@@ -8,6 +8,7 @@ FactoryGirl.define do
     username
     email
 
+
     factory :user_with_karma do
       ignore do
         points 1
@@ -17,7 +18,7 @@ FactoryGirl.define do
       after :create do |user, evaluator|
         points    = evaluator.points
         value_per = evaluator.total/evaluator.points
-
+        Rails.logger.info "FactoryGirl after create"
         create_list(:karma_point, points, :user => user, :value => value_per)
       end
     end

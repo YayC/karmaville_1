@@ -1,7 +1,8 @@
 class User < ActiveRecord::Base
   has_many :karma_points
 
-  attr_accessible :first_name, :last_name, :email, :username
+  #query used to update: User.all.each{ |u| u.update_attribute(:karma_sum, u.karma_points.pluck(:value).sum) }
+  attr_accessible :first_name, :last_name, :email, :username, :karma_sum
 
   validates :first_name, :presence => true
   validates :last_name, :presence => true
@@ -18,11 +19,12 @@ class User < ActiveRecord::Base
             :uniqueness => {:case_sensitive => false}
 
   def self.by_karma
-    joins(:karma_points).group('users.id').order('SUM(karma_points.value) DESC')
+    # joins(:karma_points).group('users.id').order('SUM(karma_points.value) DESC')
+    User.order('karma_sum DESC')
   end
 
   def total_karma
-    self.karma_points.sum(:value)
+    self.karma_sum
   end
 
   def full_name

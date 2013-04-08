@@ -18,6 +18,13 @@ describe KarmaPoint do
     let(:user) { create(:user) }
 
     it "increments the user's total_karma by the value of the karma point" do
+      Rails.logger.info user.id
+      Rails.logger.info user.karma_points
+      Rails.logger.info user.reload.karma_points
+      Rails.logger.info user.total_karma
+      Rails.logger.info user.karma_sum
+      Rails.logger.info user.reload.total_karma
+      Rails.logger.info user.reload.karma_sum
       expect {
         create(:karma_point, :user => user, :value => 10)
       }.to change(user, :total_karma).by(10)
